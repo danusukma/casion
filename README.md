@@ -30,7 +30,7 @@ A payment system API with features like top-up, payment, transfer, and transacti
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/yourusername/casion.git
+git clone https://github.com/danusukma/casion.git
 cd casion
 ```
 
