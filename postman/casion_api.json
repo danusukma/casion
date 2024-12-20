@@ -1,0 +1,510 @@
+{
+	"info": {
+		"_postman_id": "your-postman-id",
+		"name": "Casion Payment System API",
+		"description": "API collection for Casion Payment System",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Authentication",
+			"item": [
+				{
+					"name": "Register",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"first_name\": \"John\",\n    \"last_name\": \"Doe\",\n    \"phone_number\": \"0811111111\",\n    \"address\": \"123 Main St\",\n    \"pin\": \"123456\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/register",
+							"host": ["{{base_url}}"],
+							"path": ["api", "register"]
+						}
+					},
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"first_name\": \"John\",\n    \"last_name\": \"Doe\",\n    \"phone_number\": \"0811111111\",\n    \"address\": \"123 Main St\",\n    \"pin\": \"123456\"\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/api/register"
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [],
+							"body": "{\n    \"status\": \"success\",\n    \"result\": {\n        \"user_id\": \"550e8400-e29b-41d4-a716-446655440000\",\n        \"first_name\": \"John\",\n        \"last_name\": \"Doe\",\n        \"phone_number\": \"0811111111\",\n        \"address\": \"123 Main St\",\n        \"balance\": 0,\n        \"created_date\": \"2024-01-01T00:00:00Z\"\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"phone_number\": \"0811111111\",\n    \"pin\": \"123456\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/login",
+							"host": ["{{base_url}}"],
+							"path": ["api", "login"]
+						}
+					},
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"phone_number\": \"0811111111\",\n    \"pin\": \"123456\"\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/api/login"
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [],
+							"body": "{\n    \"status\": \"success\",\n    \"result\": {\n        \"access_token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...\",\n        \"refresh_token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...\"\n    }\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Profile",
+			"item": [
+				{
+					"name": "Update Profile",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"first_name\": \"John\",\n    \"last_name\": \"Smith\",\n    \"address\": \"456 Oak St\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/profile",
+							"host": ["{{base_url}}"],
+							"path": ["api", "profile"]
+						}
+					},
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"first_name\": \"John\",\n    \"last_name\": \"Smith\",\n    \"address\": \"456 Oak St\"\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/api/profile"
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [],
+							"body": "{\n    \"status\": \"success\",\n    \"result\": {\n        \"user_id\": \"550e8400-e29b-41d4-a716-446655440000\",\n        \"first_name\": \"John\",\n        \"last_name\": \"Smith\",\n        \"address\": \"456 Oak St\",\n        \"updated_date\": \"2024-01-01T00:00:00Z\"\n    }\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Transactions",
+			"item": [
+				{
+					"name": "Top Up",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"amount\": 1000000\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/topup",
+							"host": ["{{base_url}}"],
+							"path": ["api", "topup"]
+						}
+					},
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"amount\": 1000000\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/api/topup"
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [],
+							"body": "{\n    \"status\": \"success\",\n    \"result\": {\n        \"top_up_id\": \"550e8400-e29b-41d4-a716-446655440000\",\n        \"amount_top_up\": 1000000,\n        \"balance_before\": 0,\n        \"balance_after\": 1000000,\n        \"created_date\": \"2024-01-01T00:00:00Z\"\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Payment",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"amount\": 200000,\n    \"remarks\": \"Payment for groceries\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/payment",
+							"host": ["{{base_url}}"],
+							"path": ["api", "payment"]
+						}
+					},
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"amount\": 200000,\n    \"remarks\": \"Payment for groceries\"\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/api/payment"
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [],
+							"body": "{\n    \"status\": \"success\",\n    \"result\": {\n        \"payment_id\": \"550e8400-e29b-41d4-a716-446655440000\",\n        \"amount\": 200000,\n        \"remarks\": \"Payment for groceries\",\n        \"balance_before\": 1000000,\n        \"balance_after\": 800000,\n        \"created_date\": \"2024-01-01T00:00:00Z\"\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Transfer",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"target_user\": \"0822222222\",\n    \"amount\": 300000,\n    \"remarks\": \"Monthly rent payment\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/transfer",
+							"host": ["{{base_url}}"],
+							"path": ["api", "transfer"]
+						}
+					},
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"target_user\": \"0822222222\",\n    \"amount\": 300000,\n    \"remarks\": \"Monthly rent payment\"\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/api/transfer"
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [],
+							"body": "{\n    \"status\": \"success\",\n    \"result\": {\n        \"transfer_id\": \"550e8400-e29b-41d4-a716-446655440000\",\n        \"amount\": 300000,\n        \"remarks\": \"Monthly rent payment\",\n        \"balance_before\": 800000,\n        \"balance_after\": 500000,\n        \"created_date\": \"2024-01-01T00:00:00Z\"\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Get Transactions",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/transactions",
+							"host": ["{{base_url}}"],
+							"path": ["api", "transactions"]
+						}
+					},
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/transactions"
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [],
+							"body": "{\n    \"status\": \"success\",\n    \"result\": [\n        {\n            \"transfer_id\": \"550e8400-e29b-41d4-a716-446655440000\",\n            \"status\": \"success\",\n            \"user_id\": \"550e8400-e29b-41d4-a716-446655440000\",\n            \"transaction_type\": \"transfer\",\n            \"amount\": 300000,\n            \"remarks\": \"Monthly rent payment\",\n            \"balance_before\": 800000,\n            \"balance_after\": 500000,\n            \"created_date\": \"2024-01-01T00:00:00Z\"\n        }\n    ]\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Dashboard",
+			"item": [
+				{
+					"name": "Get Dashboard Stats",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/dashboard/stats",
+							"host": ["{{base_url}}"],
+							"path": ["api", "dashboard", "stats"]
+						}
+					},
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/dashboard/stats"
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [],
+							"body": "{\n    \"status\": \"success\",\n    \"result\": {\n        \"balance\": 500000,\n        \"total_transactions\": 3,\n        \"total_transferred\": 300000,\n        \"total_received\": 0\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Get Recent Transfers",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/dashboard/transfers/recent",
+							"host": ["{{base_url}}"],
+							"path": ["api", "dashboard", "transfers", "recent"]
+						}
+					},
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/dashboard/transfers/recent"
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [],
+							"body": "{\n    \"status\": \"success\",\n    \"result\": [\n        {\n            \"transfer_id\": \"550e8400-e29b-41d4-a716-446655440000\",\n            \"amount\": 300000,\n            \"type\": \"sent\",\n            \"status\": \"success\",\n            \"created_date\": \"2024-01-01T00:00:00Z\"\n        }\n    ]\n}"
+						}
+					]
+				},
+				{
+					"name": "Get Failed Transfers",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/dashboard/transfers/failed",
+							"host": ["{{base_url}}"],
+							"path": ["api", "dashboard", "transfers", "failed"]
+						}
+					},
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/dashboard/transfers/failed"
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [],
+							"body": "{\n    \"status\": \"success\",\n    \"result\": [\n        {\n            \"transfer_id\": \"550e8400-e29b-41d4-a716-446655440000\",\n            \"amount\": 1000000,\n            \"remarks\": \"Insufficient balance\",\n            \"created_date\": \"2024-01-01T00:00:00Z\"\n        }\n    ]\n}"
+						}
+					]
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"if (pm.response.code === 200 && pm.request.url.toString().includes('/login')) {",
+					"    var jsonData = pm.response.json();",
+					"    if (jsonData.result && jsonData.result.access_token) {",
+					"        pm.environment.set('token', jsonData.result.access_token);",
+					"    }",
+					"}"
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:8080",
+			"type": "string"
+		}
+	]
+} 

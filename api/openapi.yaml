@@ -1,0 +1,677 @@
+openapi: 3.0.0
+info:
+  title: Casion Payment System API
+  version: 1.0.0
+  description: A payment system API with features like top-up, payment, transfer, and transaction history.
+  contact:
+    name: API Support
+    url: http://www.swagger.io/support
+    email: support@swagger.io
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+
+servers:
+  - url: http://localhost:8080/api
+    description: Local development server
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+
+  schemas:
+    Error:
+      type: object
+      properties:
+        status:
+          type: string
+          example: error
+        message:
+          type: string
+
+    RegisterRequest:
+      type: object
+      required:
+        - first_name
+        - last_name
+        - phone_number
+        - address
+        - pin
+      properties:
+        first_name:
+          type: string
+          example: John
+        last_name:
+          type: string
+          example: Doe
+        phone_number:
+          type: string
+          example: "081234567890"
+        address:
+          type: string
+          example: "123 Main St"
+        pin:
+          type: string
+          example: "123456"
+
+    RegisterResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          example: success
+        result:
+          type: object
+          properties:
+            user_id:
+              type: string
+            first_name:
+              type: string
+            last_name:
+              type: string
+            phone_number:
+              type: string
+            address:
+              type: string
+            balance:
+              type: number
+            created_date:
+              type: string
+              format: date-time
+
+    LoginRequest:
+      type: object
+      required:
+        - phone_number
+        - pin
+      properties:
+        phone_number:
+          type: string
+          example: "081234567890"
+        pin:
+          type: string
+          example: "123456"
+
+    LoginResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          example: success
+        result:
+          type: object
+          properties:
+            access_token:
+              type: string
+            refresh_token:
+              type: string
+
+    UpdateProfileRequest:
+      type: object
+      required:
+        - first_name
+        - last_name
+        - address
+      properties:
+        first_name:
+          type: string
+          example: John
+        last_name:
+          type: string
+          example: Doe
+        address:
+          type: string
+          example: "456 Oak St"
+
+    UpdateProfileResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          example: success
+        result:
+          type: object
+          properties:
+            user_id:
+              type: string
+            first_name:
+              type: string
+            last_name:
+              type: string
+            address:
+              type: string
+            updated_date:
+              type: string
+              format: date-time
+
+    TopUpRequest:
+      type: object
+      required:
+        - amount
+      properties:
+        amount:
+          type: number
+          example: 100000
+
+    TopUpResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          example: success
+        result:
+          type: object
+          properties:
+            top_up_id:
+              type: string
+            amount_top_up:
+              type: number
+            balance_before:
+              type: number
+            balance_after:
+              type: number
+            created_date:
+              type: string
+              format: date-time
+
+    PaymentRequest:
+      type: object
+      required:
+        - amount
+        - remarks
+      properties:
+        amount:
+          type: number
+          example: 50000
+        remarks:
+          type: string
+          example: "Payment for groceries"
+
+    PaymentResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          example: success
+        result:
+          type: object
+          properties:
+            payment_id:
+              type: string
+            amount:
+              type: number
+            remarks:
+              type: string
+            balance_before:
+              type: number
+            balance_after:
+              type: number
+            created_date:
+              type: string
+              format: date-time
+
+    TransferRequest:
+      type: object
+      required:
+        - target_user
+        - amount
+        - remarks
+      properties:
+        target_user:
+          type: string
+          example: "081234567890"
+        amount:
+          type: number
+          example: 75000
+        remarks:
+          type: string
+          example: "Monthly rent payment"
+
+    TransferResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          example: success
+        result:
+          type: object
+          properties:
+            transfer_id:
+              type: string
+            amount:
+              type: number
+            remarks:
+              type: string
+            balance_before:
+              type: number
+            balance_after:
+              type: number
+            created_date:
+              type: string
+              format: date-time
+
+    TransactionsResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          example: success
+        result:
+          type: array
+          items:
+            type: object
+            properties:
+              transfer_id:
+                type: string
+              status:
+                type: string
+              user_id:
+                type: string
+              transaction_type:
+                type: string
+              amount:
+                type: number
+              remarks:
+                type: string
+              balance_before:
+                type: number
+              balance_after:
+                type: number
+              created_date:
+                type: string
+                format: date-time
+
+    DashboardStatsResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          example: success
+        result:
+          type: object
+          properties:
+            balance:
+              type: number
+              example: 1000000
+            total_transactions:
+              type: integer
+              example: 25
+            total_transferred:
+              type: number
+              example: 750000
+            total_received:
+              type: number
+              example: 500000
+
+    RecentTransfersResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          example: success
+        result:
+          type: array
+          items:
+            type: object
+            properties:
+              transfer_id:
+                type: string
+                example: "550e8400-e29b-41d4-a716-446655440000"
+              amount:
+                type: number
+                example: 50000
+              type:
+                type: string
+                example: sent
+                description: "'sent' or 'received'"
+              status:
+                type: string
+                example: success
+              created_date:
+                type: string
+                format: date-time
+
+    FailedTransfersResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          example: success
+        result:
+          type: array
+          items:
+            type: object
+            properties:
+              transfer_id:
+                type: string
+                example: "550e8400-e29b-41d4-a716-446655440000"
+              amount:
+                type: number
+                example: 50000
+              remarks:
+                type: string
+                example: "Transfer failed due to insufficient balance"
+              created_date:
+                type: string
+                format: date-time
+
+paths:
+  /register:
+    post:
+      tags:
+        - 1-Authentication
+      summary: Register a new user
+      description: Register a new user with the provided details
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterRequest'
+      responses:
+        '201':
+          description: User successfully registered
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RegisterResponse'
+        '400':
+          description: Invalid request payload
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '409':
+          description: Phone number already exists
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /login:
+    post:
+      tags:
+        - 1-Authentication
+      summary: Login user
+      description: Authenticate user and return access token
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+      responses:
+        '200':
+          description: Login successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginResponse'
+        '400':
+          description: Invalid request payload
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Invalid phone number or PIN
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /profile:
+    put:
+      tags:
+        - 2-Profile
+      summary: Update user profile
+      description: Update user's profile information
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateProfileRequest'
+      responses:
+        '200':
+          description: Profile updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpdateProfileResponse'
+        '400':
+          description: Invalid request payload
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /topup:
+    post:
+      tags:
+        - 3-Transaction
+      summary: Top up user balance
+      description: Add money to user's balance
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TopUpRequest'
+      responses:
+        '200':
+          description: Top up successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TopUpResponse'
+        '400':
+          description: Invalid request payload
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /payment:
+    post:
+      tags:
+        - 3-Transaction
+      summary: Make a payment
+      description: Process a payment transaction
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PaymentRequest'
+      responses:
+        '200':
+          description: Payment successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentResponse'
+        '400':
+          description: Invalid request payload
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '402':
+          description: Insufficient balance
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /transfer:
+    post:
+      tags:
+        - 3-Transaction
+      summary: Transfer money to another user
+      description: Transfer money from one user to another
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TransferRequest'
+      responses:
+        '200':
+          description: Transfer successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransferResponse'
+        '400':
+          description: Invalid request payload
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '402':
+          description: Insufficient balance
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Target user not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /transactions:
+    get:
+      tags:
+        - 3-Transaction
+      summary: Get user's transaction history
+      description: Get a list of user's transactions
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: List of transactions
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransactionsResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /dashboard/stats:
+    get:
+      tags:
+        - 4-Dashboard
+      summary: Get dashboard statistics
+      description: Get user's dashboard statistics including total transactions, balance, total transferred, and total received
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: Dashboard statistics retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DashboardStatsResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /dashboard/transfers/recent:
+    get:
+      tags:
+        - 4-Dashboard
+      summary: Get recent transfers
+      description: Get user's recent transfer transactions (both sent and received)
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: Recent transfers retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecentTransfersResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /dashboard/transfers/failed:
+    get:
+      tags:
+        - 4-Dashboard
+      summary: Get failed transfers
+      description: Get user's failed transfer transactions
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: Failed transfers retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FailedTransfersResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error' 
